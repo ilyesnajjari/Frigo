@@ -1,0 +1,51 @@
+CREATE TABLE Utilisateur (
+   ID_User INTEGER PRIMARY KEY AUTOINCREMENT,
+   username VARCHAR(50) NOT NULL,
+   password VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Ingredient (
+   ID_ingredient INTEGER PRIMARY KEY AUTOINCREMENT,
+   nom VARCHAR(50) NOT NULL,
+   quantite REAL NOT NULL,
+   date_peremption DATE
+);
+
+CREATE TABLE Recettes_Favories (
+   ID_recette INTEGER PRIMARY KEY AUTOINCREMENT,
+   nom VARCHAR(50) NOT NULL,
+   instructions TEXT,
+   urlImage VARCHAR(255),
+   ID_User INTEGER NOT NULL,
+   FOREIGN KEY(ID_User) REFERENCES Utilisateur(ID_User) ON DELETE CASCADE
+);
+
+CREATE TABLE ListeFrigo (
+   ID_User INTEGER NOT NULL,
+   ID_ingredient INTEGER PRIMARY KEY NOT NULL,
+   FOREIGN KEY(ID_User) REFERENCES Utilisateur(ID_User) ON DELETE CASCADE,
+   FOREIGN KEY(ID_ingredient) REFERENCES Ingredient(ID_ingredient) ON DELETE CASCADE
+);
+
+CREATE TABLE IngredientsRecettes (
+   ID_ingredient INTEGER NOT NULL,
+   ID_recette INTEGER NOT NULL,
+   PRIMARY KEY (ID_ingredient, ID_recette),
+   FOREIGN KEY (ID_ingredient) REFERENCES Ingredient(ID_ingredient),
+   FOREIGN KEY (ID_recette) REFERENCES Recettes_Favories(ID_recette)
+);
+
+CREATE TABLE Intolerence(
+   ID_Intolerence INTEGER NOT NULL,
+   nom VARCHAR(50),
+   ID_User INT NOT NULL,
+   PRIMARY KEY(ID_Intolerence),
+   FOREIGN KEY(ID_User) REFERENCES Utilisateur(ID_User)
+);
+
+CREATE TABLE shopping_list (
+    user_id INTEGER,
+    ingredient_name VARCHAR(255),
+    PRIMARY KEY (user_id, ingredient_name),
+    FOREIGN KEY (user_id) REFERENCES Utilisateur(ID_User)
+)
